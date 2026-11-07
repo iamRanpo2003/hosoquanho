@@ -1,0 +1,6 @@
+{
+  "name": "Hồ sơ số Dân ca Quan họ vùng văn hóa Châu thổ Bắc Bộ",
+  "description": "Hệ thống lưu trữ và số hóa di sản Dân ca Quan họ của cộng đồng di cư tại Hà Nội, khảo sát thực địa CLB Quan họ Cầu Giấy và đối chiếu 49 làng Quan họ cổ Kinh Bắc.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
