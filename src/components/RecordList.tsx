@@ -237,9 +237,31 @@ export const RecordList: React.FC<RecordListProps> = ({ records, onSelectRecord 
             onClick={() => onSelectRecord(item)}
             className="group bg-white rounded-xl border border-[#E3D9C9] hover:border-[#5B1A18]/50 shadow-xs hover:shadow-md transition-all duration-200 cursor-pointer flex flex-col justify-between overflow-hidden"
           >
-            {/* Card Header */}
-            <div className="p-5 space-y-3">
-              <div className="flex items-center justify-between gap-2">
+            {/* Card Visual Banner (Field Photo) */}
+            {item.imageUrl ? (
+              <div className="relative h-48 w-full overflow-hidden bg-[#EAE0D0]">
+                <img
+                  src={item.imageUrl}
+                  alt={item.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
+                <span className="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-md bg-[#5B1A18]/90 text-[#E8C547] text-xs font-mono font-bold backdrop-blur-xs border border-[#E8C547]/30 shadow-xs">
+                  {item.id}
+                </span>
+                <span className="absolute top-2.5 right-2.5 inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-black/60 text-xs font-medium text-white backdrop-blur-xs">
+                  {getRecordTypeIcon(item.recordType)}
+                  <span>{item.recordTypeLabel}</span>
+                </span>
+                {item.imageCaption && (
+                  <span className="absolute bottom-2.5 left-3 right-3 text-[11px] text-[#FDEBD0] line-clamp-1 italic drop-shadow-sm font-medium">
+                    📷 {item.imageCaption}
+                  </span>
+                )}
+              </div>
+            ) : (
+              <div className="pt-4 px-5 flex items-center justify-between gap-2">
                 <span className="px-2.5 py-1 rounded-md bg-[#FAF4EA] text-[#5B1A18] text-xs font-mono font-bold border border-[#E3D9C9]">
                   {item.id}
                 </span>
@@ -248,7 +270,10 @@ export const RecordList: React.FC<RecordListProps> = ({ records, onSelectRecord 
                   <span>{item.recordTypeLabel}</span>
                 </span>
               </div>
+            )}
 
+            {/* Card Content Body */}
+            <div className="p-5 space-y-3">
               <h3 className="font-serif font-bold text-base text-[#2C2420] group-hover:text-[#5B1A18] transition-colors leading-snug">
                 {item.title}
               </h3>

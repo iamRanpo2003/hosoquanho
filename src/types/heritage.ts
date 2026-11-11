@@ -73,6 +73,10 @@ export interface HeritageRecord {
     notes: string;
     pitchPattern: number[]; // Tần số nốt nhạc để mô phỏng âm mộc qua Web Audio API
   };
+
+  // Hình ảnh thực địa điền dã
+  imageUrl?: string;
+  imageCaption?: string;
 }
 
 export interface AncientVillage {

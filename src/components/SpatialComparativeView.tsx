@@ -173,7 +173,25 @@ export const SpatialComparativeView: React.FC<SpatialComparativeViewProps> = ({ 
               </span>
             </div>
 
-            {/* Location Specs */}
+            {/* Location Specs & Village Photo */}
+            <div className="relative h-44 rounded-xl overflow-hidden border border-[#E3D9C9] bg-black/10">
+              <img
+                src={
+                  activeVillage.name.includes('Diềm')
+                    ? '/src/assets/images/den_vua_ba_1794428331652.jpg'
+                    : activeVillage.name.includes('Thổ Hà') || activeVillage.name.includes('Bồ Sơn')
+                    ? '/src/assets/images/hat_moc_quanho_1794428287844.jpg'
+                    : '/src/assets/images/hat_doi_canhhat_1794428317535.jpg'
+                }
+                alt={activeVillage.name}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+              <span className="absolute bottom-2 left-3 text-xs text-[#FDEBD0] font-medium drop-shadow-xs">
+                📷 Không gian làng cổ: {activeVillage.name} ({activeVillage.province})
+              </span>
+            </div>
+
             <div className="space-y-2 text-xs bg-white p-3.5 rounded-xl border border-[#E3D9C9]">
               <div className="flex items-start gap-2">
                 <strong className="text-[#5B1A18] min-w-[120px]">📍 Địa bàn hiện nay:</strong>

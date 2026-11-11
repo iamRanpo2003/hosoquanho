@@ -9,12 +9,13 @@ import {
   Download, 
   Info,
   Users,
-  Compass
+  Compass,
+  Database
 } from 'lucide-react';
 
 interface NavbarProps {
-  activeTab: 'archive' | 'spatial' | 'gemini' | 'sources';
-  setActiveTab: (tab: 'archive' | 'spatial' | 'gemini' | 'sources') => void;
+  activeTab: 'archive' | 'schema' | 'spatial' | 'gemini' | 'sources';
+  setActiveTab: (tab: 'archive' | 'schema' | 'spatial' | 'gemini' | 'sources') => void;
   onOpenIntro: () => void;
   onOpenExport: () => void;
   isReading: boolean;
@@ -93,6 +94,18 @@ export const Navbar: React.FC<NavbarProps> = ({
           >
             <BookOpen className="w-4 h-4" />
             <span>Kho Hồ sơ Số</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('schema')}
+            className={`px-3.5 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 whitespace-nowrap ${
+              activeTab === 'schema'
+                ? 'bg-[#5B1A18] text-[#FDEBD0] shadow-sm'
+                : 'text-[#5A4A42] hover:bg-[#EFE8DC]'
+            }`}
+          >
+            <Database className="w-4 h-4 text-[#E8C547]" />
+            <span>Bộ Trường Dữ Liệu</span>
           </button>
 
           <button

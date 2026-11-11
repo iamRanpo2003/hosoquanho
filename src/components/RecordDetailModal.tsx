@@ -145,6 +145,25 @@ export const RecordDetailModal: React.FC<RecordDetailModalProps> = ({ record, on
             </div>
           </div>
 
+          {/* FIELD PHOTOGRAPH / VISUAL RECORD */}
+          {record.imageUrl && (
+            <div className="rounded-xl overflow-hidden border border-[#E3D9C9] bg-white shadow-xs">
+              <div className="relative aspect-video max-h-80 w-full overflow-hidden bg-black/5">
+                <img
+                  src={record.imageUrl}
+                  alt={record.title}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              {record.imageCaption && (
+                <div className="p-3 bg-[#FAF8F5] border-t border-[#F0E8DC] text-xs text-[#5B1A18] font-medium flex items-center gap-2">
+                  <span className="font-bold">📷 Tư liệu hình ảnh thực địa:</span>
+                  <span className="text-[#4A3222] italic">{record.imageCaption}</span>
+                </div>
+              )}
+            </div>
+          )}
+
           {/* DUAL LOCATIONS & KINHBAC REFERENCE */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="bg-white p-4 rounded-xl border border-[#E3D9C9] space-y-2">

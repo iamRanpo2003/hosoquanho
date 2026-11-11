@@ -30,6 +30,8 @@ export const heritageRecordsData: HeritageRecord[] = [
     heritageElement: 'Nghi thức Mời trầu canh hát',
     sourceCitation: 'Khảo sát điền dã thực tế ngày 12/10/2026; đối chiếu tư liệu Cục Di sản văn hóa (dsvh.gov.vn)',
     sourceUrl: 'http://dsvh.gov.vn',
+    imageUrl: '/src/assets/images/tem_trau_phuong_1794428266279.jpg',
+    imageCaption: 'Cơi trầu têm cánh phượng và cau tươi quệt vôi hồng chuẩn mực của liền chị CLB Quan họ Cầu Giấy',
   },
   {
     id: 'QH-HN-002',
@@ -66,6 +68,8 @@ export const heritageRecordsData: HeritageRecord[] = [
       notes: 'La rằng... La rằng rằng ơi... Đôi ta tình nặng nghĩa dày...',
       pitchPattern: [220, 247, 293, 330, 293, 247, 220],
     },
+    imageUrl: '/src/assets/images/hat_moc_quanho_1794428287844.jpg',
+    imageCaption: 'Hai liền anh cao niên thực hành xướng âm mộc không nhạc đệm câu hát lề lối La rằng',
   },
   {
     id: 'QH-HN-003',
@@ -96,6 +100,8 @@ export const heritageRecordsData: HeritageRecord[] = [
     heritageElement: 'Kỹ thuật Vang - Rền - Nền - Nảy',
     sourceCitation: 'Bản ghi chép điền dã phỏng vấn sâu ngày 14/10/2026; Đối chiếu cổng quanhobacninh.vn',
     sourceUrl: 'http://quanhobacninh.vn',
+    imageUrl: '/src/assets/images/trang_phuc_quanho_1794428302609.jpg',
+    imageCaption: 'Nghệ nhân cao tuổi trong trang phục khăn mỏ quạ và nón quai thao truyền thống Kinh Bắc',
   },
   {
     id: 'QH-HN-004',
@@ -132,6 +138,8 @@ export const heritageRecordsData: HeritageRecord[] = [
       notes: 'Cây trúc xinh tang tình là cây trúc mọc... Chị Hai xinh tang tình là chị Hai đứng...',
       pitchPattern: [261, 293, 330, 392, 440, 392, 330],
     },
+    imageUrl: '/src/assets/images/truyen_day_tre_1794428346674.jpg',
+    imageCaption: 'Nghệ nhân cao niên kiên nhẫn hướng dẫn học viên trẻ Hà Nội bẻ làn nắn điệu từng chữ cổ',
   },
   {
     id: 'QH-HN-005',
@@ -163,6 +171,8 @@ export const heritageRecordsData: HeritageRecord[] = [
     heritageElement: 'Trang phục - Đạo cụ chuẩn mực',
     sourceCitation: 'Hồ sơ Di sản UNESCO nvsk.vnanet.vn và Khảo sát đo đạc hiện vật thực tế',
     sourceUrl: 'https://nvsk.vnanet.vn',
+    imageUrl: '/src/assets/images/trang_phuc_quanho_1794428302609.jpg',
+    imageCaption: 'Bộ trang phục liền chị truyền thống: áo mớ ba mớ bảy lụa tơ tằm, nón quai thao và khăn mỏ quạ',
   },
   {
     id: 'QH-HN-006',
@@ -193,6 +203,8 @@ export const heritageRecordsData: HeritageRecord[] = [
     heritageElement: 'Trang phục - Đạo cụ chuẩn mực',
     sourceCitation: 'Hồ sơ Cục Di sản văn hóa dsvh.gov.vn & Đo đạc hiện vật điền dã',
     sourceUrl: 'http://dsvh.gov.vn',
+    imageUrl: '/src/assets/images/lien_anh_o_1794428359464.jpg',
+    imageCaption: 'Liền anh mặc áo the đen ngũ thân, đội khăn xếp, tay cầm ô lục soạn che nghiêng',
   },
   {
     id: 'QH-HN-007',
@@ -228,6 +240,8 @@ export const heritageRecordsData: HeritageRecord[] = [
       notes: 'Lúng liếng là lúng liếng ơi... Cái mắt lúng liếng như dao cau liếc vào lòng người...',
       pitchPattern: [293, 330, 392, 440, 523, 440, 392],
     },
+    imageUrl: '/src/assets/images/hat_doi_canhhat_1794428317535.jpg',
+    imageCaption: 'Canh hát đối đáp giao duyên giữa cặp liền anh Cầu Giấy và liền chị gốc Diềm, quạt the đưa duyên',
   },
   {
     id: 'QH-HN-008',
@@ -263,6 +277,8 @@ export const heritageRecordsData: HeritageRecord[] = [
       notes: 'Người ơi... người ở đừng về... Người về em vẫn khóc thầm... Đôi ống tay áo ướt đầm như mưa...',
       pitchPattern: [220, 247, 261, 293, 261, 247, 220, 196, 220],
     },
+    imageUrl: '/src/assets/images/hat_doi_canhhat_1794428317535.jpg',
+    imageCaption: 'Khoảnh khắc tàn canh hát giã bạn, tay vịn mạn thuyền, dâng chén rượu tiễn biệt',
   },
   {
     id: 'QH-HN-009',
@@ -293,6 +309,8 @@ export const heritageRecordsData: HeritageRecord[] = [
     heritageElement: 'Tập quán kết chạ và tổ chức bọn Quan họ',
     sourceCitation: 'Tài liệu Ủy ban Nhà nước về người Việt Nam ở nước ngoài (scov.gov.vn) & Phỏng vấn sâu điền dã',
     sourceUrl: 'http://scov.gov.vn',
+    imageUrl: '/src/assets/images/hat_moc_quanho_1794428287844.jpg',
+    imageCaption: 'Sinh hoạt bọn Quan họ truyền thống kết nối nghĩa tình người Kinh Bắc di cư tại Hà Nội',
   },
   {
     id: 'QH-HN-010',
@@ -323,6 +341,8 @@ export const heritageRecordsData: HeritageRecord[] = [
     heritageElement: 'Không gian diễn xướng đô thị',
     sourceCitation: 'Khảo sát thực địa ngày 13/10/2026; Đối chiếu báo cáo Studocu ĐH Văn hóa Hà Nội (studocu.vn)',
     sourceUrl: 'https://www.studocu.vn',
+    imageUrl: '/src/assets/images/hat_doi_canhhat_1794428317535.jpg',
+    imageCaption: 'Không gian canh hát chiếu hoa, cơi trầu chén trà ấm cúng trong căn hộ tập thể đô thị',
   },
   {
     id: 'QH-HN-011',
@@ -359,6 +379,8 @@ export const heritageRecordsData: HeritageRecord[] = [
       notes: 'Ngồi tựa... mạn thuyền... Trăng thanh gió mát... con thuyền lững lờ trôi...',
       pitchPattern: [220, 261, 293, 330, 392, 330, 293, 261],
     },
+    imageUrl: '/src/assets/images/truyen_day_tre_1794428346674.jpg',
+    imageCaption: 'Bản ký âm đối chiếu và phân tích thang âm ngũ cung giữa bài của liền anh và liền chị',
   },
   {
     id: 'QH-HN-012',
@@ -395,6 +417,8 @@ export const heritageRecordsData: HeritageRecord[] = [
       notes: 'Tình tang... ới tính tình tang... Chim bay mỏi cánh... biết về phương nao...',
       pitchPattern: [247, 293, 330, 392, 330, 293, 247],
     },
+    imageUrl: '/src/assets/images/hat_moc_quanho_1794428287844.jpg',
+    imageCaption: 'Thực hành giữ nhịp thở và lót âm nền trong làn điệu lề lối Tình tang',
   },
   {
     id: 'QH-HN-013',
@@ -425,6 +449,8 @@ export const heritageRecordsData: HeritageRecord[] = [
     heritageElement: 'Quy trình truyền khẩu trong đô thị',
     sourceCitation: 'Báo cáo bảo tồn Studocu ĐH Văn hóa Hà Nội (studocu.vn) & Phỏng vấn sâu điền dã',
     sourceUrl: 'https://www.studocu.vn',
+    imageUrl: '/src/assets/images/truyen_day_tre_1794428346674.jpg',
+    imageCaption: 'Lớp học truyền khẩu Quan họ cuối tuần cho sinh viên và công chức Thủ đô',
   },
   {
     id: 'QH-HN-014',
@@ -454,6 +480,8 @@ export const heritageRecordsData: HeritageRecord[] = [
     heritageElement: 'Tín ngưỡng thờ Thủy tổ Quan họ',
     sourceCitation: 'Hồ sơ Cổng thông tin quanhobacninh.vn & Thực địa điền dã ngày 6',
     sourceUrl: 'http://quanhobacninh.vn',
+    imageUrl: '/src/assets/images/den_vua_ba_1794428331652.jpg',
+    imageCaption: 'Đoàn kiều bào và người con Kinh Bắc tại Hà Nội về nguồn dâng hương tại Đền Vua Bà (Làng Diềm)',
   },
   {
     id: 'QH-HN-015',
@@ -489,6 +517,8 @@ export const heritageRecordsData: HeritageRecord[] = [
       notes: 'Chia rẽ đôi nơi... Kẻ ở người về... Người ơi người ở... sao đành chia tay...',
       pitchPattern: [220, 247, 293, 261, 247, 220, 196, 220],
     },
+    imageUrl: '/src/assets/images/hat_doi_canhhat_1794428317535.jpg',
+    imageCaption: 'Nghi thức bưng khay trầu rượu hai tay tống biệt trong làn điệu Chia rẽ đôi nơi',
   },
   {
     id: 'QH-HN-016',
@@ -519,6 +549,8 @@ export const heritageRecordsData: HeritageRecord[] = [
     heritageElement: 'Kỹ thuật Vang - Rền - Nền - Nảy',
     sourceCitation: 'Hồ sơ Di sản UNESCO nvsk.vnanet.vn & Bản chép tay gia truyền của nghệ nhân',
     sourceUrl: 'https://nvsk.vnanet.vn',
+    imageUrl: '/src/assets/images/truyen_day_tre_1794428346674.jpg',
+    imageCaption: 'Bản chép tay lời cổ bài hát lề lối Đương quan đương lội được nghệ nhân cao tuổi trao truyền',
   },
 ];
 

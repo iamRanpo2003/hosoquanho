@@ -7,6 +7,7 @@ import { GeminiHeritageAdvisor } from './components/GeminiHeritageAdvisor';
 import { SourcesAndEthicsView } from './components/SourcesAndEthicsView';
 import { ProjectIntroModal } from './components/ProjectIntroModal';
 import { ExportModal } from './components/ExportModal';
+import { SchemaAndFieldDataView } from './components/SchemaAndFieldDataView';
 import { 
   heritageRecordsData, 
   ancientVillagesData, 
@@ -27,7 +28,7 @@ import {
 } from 'lucide-react';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<'archive' | 'spatial' | 'gemini' | 'sources'>('archive');
+  const [activeTab, setActiveTab] = useState<'archive' | 'schema' | 'spatial' | 'gemini' | 'sources'>('archive');
   const [selectedRecord, setSelectedRecord] = useState<HeritageRecord | null>(null);
   const [isIntroOpen, setIsIntroOpen] = useState(false);
   const [isExportOpen, setIsExportOpen] = useState(false);
@@ -139,6 +140,13 @@ export default function App() {
         {/* Tab Content Rendering */}
         {activeTab === 'archive' && (
           <RecordList
+            records={heritageRecordsData}
+            onSelectRecord={(rec) => setSelectedRecord(rec)}
+          />
+        )}
+
+        {activeTab === 'schema' && (
+          <SchemaAndFieldDataView
             records={heritageRecordsData}
             onSelectRecord={(rec) => setSelectedRecord(rec)}
           />
