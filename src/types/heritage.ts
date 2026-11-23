@@ -74,26 +74,42 @@ export interface HeritageRecord {
     pitchPattern: number[]; // Tần số nốt nhạc để mô phỏng âm mộc qua Web Audio API
   };
 
-  // Hình ảnh thực địa điền dã
+  // Trạng thái tư liệu ảnh / video thực địa (không dùng ảnh máy sinh thay thế hiện vật/di tích/nghệ nhân thật)
   imageUrl?: string;
   imageCaption?: string;
+  imageAttribution?: ImageAttribution;
+  mediaStatus?: string;
+  nonPublicNote?: string;
+}
+
+export interface ImageAttribution {
+  author: string;
+  license: string;
+  year: string;
+  sourceName: string;
+  sourceUrl: string;
+  isReferencePhoto: boolean;
 }
 
 export interface AncientVillage {
   id: string;
   name: string; // Tên làng cổ (ví dụ: Làng Diềm / Viêm Xá)
-  currentPlace: string; // Phường Hòa Long, Thành phố Bắc Ninh
-  originalPlace: string; // Làng Viêm Xá, tổng Phi Mô, phủ Từ Sơn
-  province: 'Bắc Ninh' | 'Bắc Giang';
+  currentPlace: string; // Đơn vị hành chính sau sắp xếp năm 2025
+  originalPlace: string; // Địa danh gốc lịch sử và tên cũ trước 07/2025
+  province: 'Bắc Ninh' | 'Bắc Giang'; // Vùng Kinh Bắc trước 07/2025 (nay đều thuộc Tỉnh Bắc Ninh)
   chracteristics: string;
   notableSongs: string[];
+  imageUrl?: string;
+  imageCaption?: string;
+  imageAttribution?: ImageAttribution;
 }
 
 export interface ResearchSource {
   id: string;
   name: string;
-  type: 'chinh_thong' | 'nghien_cuu_bao_chi';
+  type: 'chinh_thong' | 'nghien_cuu_bao_chi' | 'hanh_chinh_dien_da';
   organization: string;
+  year: string;
   url: string;
   extractedContent: string;
   verifiedStatus: string;

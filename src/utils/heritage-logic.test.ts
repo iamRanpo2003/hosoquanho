@@ -7,6 +7,10 @@ import {
   searchAncientVillages,
   exportToJSON,
   exportToCSV,
+  isPendingValue,
+  isValidHttpUrl,
+  formatSourceVerifiedStatus,
+  shouldDisplayMediaStatus,
 } from './heritage-logic';
 import { HeritageRecord, AncientVillage } from '../types/heritage';
 
@@ -150,3 +154,53 @@ test('exportToJSON and exportToCSV generate valid text outputs', () => {
   assert.ok(csvOutput.includes('QH-HN-001'));
   assert.ok(csvOutput.includes('QH-HN-002'));
 });
+
+test('all real dataset records pass strict validation and any photo has verified open-license attribution', async () => {
+  const { heritageRecordsData, researchSourcesData } = await import('../data/heritage-records');
+  assert.ok(heritageRecordsData.length >= 15);
+  for (const rec of heritageRecordsData) {
+    const check = validateHeritageRecord(rec);
+    assert.equal(check.isValid, true, `Record ${rec.id} invalid: ${check.errors.join('; ')}`);
+    if (rec.imageUrl) {
+      assert.ok(
+        rec.imageUrl.startsWith('/images/commons/'),
+        `Record ${rec.id} must only use verified Commons reference photos`
+      );
+      assert.ok(rec.imageAttribution, `Record ${rec.id} must include imageAttribution`);
+      assert.ok(rec.imageAttribution.author.trim().length > 0);
+      assert.ok(rec.imageAttribution.license.trim().length > 0);
+      assert.ok(rec.imageAttribution.sourceUrl.startsWith('https://commons.wikimedia.org/'));
+    }
+  }
+  for (const src of researchSourcesData) {
+    assert.ok(src.name.trim().length > 0);
+    assert.ok(src.organization.trim().length > 0);
+    assert.ok(src.year.trim().length > 0);
+    assert.ok(src.url.trim().length > 0);
+  }
+});
+
+test('pending field helpers hide [CẦN BỔ SUNG] and missing-media markers cleanly', () => {
+  assert.equal(isPendingValue('[CẦN BỔ SUNG]'), true);
+  assert.equal(isPendingValue('[CẦN BỔ SUNG đường dẫn văn bản gốc]'), true);
+  assert.equal(isPendingValue('2009 (Công ước 2003)'), false);
+
+  assert.equal(isValidHttpUrl('[CẦN BỔ SUNG đường dẫn]'), false);
+  assert.equal(isValidHttpUrl('https://vtv.vn'), true);
+  assert.equal(isValidHttpUrl('http://dsvh.gov.vn'), true);
+
+  assert.equal(
+    formatSourceVerifiedStatus('Nguồn chính thống (thiếu năm tài liệu cụ thể)'),
+    'Nguồn chính thống'
+  );
+  assert.equal(
+    formatSourceVerifiedStatus('Văn bản pháp lý 2025 (cần bổ sung URL gốc)'),
+    'Văn bản pháp lý 2025'
+  );
+  assert.equal(formatSourceVerifiedStatus('Đã xác nhận năm 2009'), 'Đã xác nhận năm 2009');
+
+  assert.equal(shouldDisplayMediaStatus('Chưa có ảnh chụp thực tế di tích được cấp phép.'), false);
+  assert.equal(shouldDisplayMediaStatus('Tư liệu phỏng vấn văn bản; chưa công bố ảnh.'), false);
+  assert.equal(shouldDisplayMediaStatus('Đính kèm ảnh tư liệu tham khảo (CC BY 4.0).'), true);
+});
+

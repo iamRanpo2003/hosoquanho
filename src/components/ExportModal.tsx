@@ -46,7 +46,6 @@ export const ExportModal: React.FC<ExportModalProps> = ({ isOpen, onClose, recor
       mimeType = 'application/json;charset=utf-8';
       ext = 'json';
     } else if (selectedFormat === 'csv') {
-      // Add UTF-8 BOM so Microsoft Excel renders Vietnamese characters cleanly
       const bom = '\uFEFF';
       const blob = new Blob([bom + content], { type: 'text/csv;charset=utf-8' });
       const url = URL.createObjectURL(blob);
@@ -83,78 +82,85 @@ export const ExportModal: React.FC<ExportModalProps> = ({ isOpen, onClose, recor
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4">
+    <div
+      className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-xs flex items-center justify-center p-2 sm:p-4"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="export-modal-title"
+    >
       <div 
-        className="bg-[#FAF8F5] w-full max-w-2xl rounded-2xl shadow-2xl border border-[#E3D9C9] overflow-hidden my-6 flex flex-col animate-in fade-in zoom-in-95 duration-200"
+        className="bg-[#FAF8F5] w-full max-w-2xl rounded-2xl shadow-2xl border border-[#E3D9C9] overflow-hidden my-4 max-h-[92vh] flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="bg-[#5B1A18] text-[#FDEBD0] p-6 flex items-start justify-between gap-4 border-b border-[#E8C547]/30">
-          <div className="space-y-1">
-            <span className="px-2.5 py-0.5 rounded-md bg-[#E8C547] text-[#4A1513] text-xs font-mono font-bold">
+        <div className="bg-[#5B1A18] text-[#FDEBD0] p-4 sm:p-6 flex items-start justify-between gap-3 border-b border-[#E8C547]/30">
+          <div className="space-y-1.5 min-w-0">
+            <span className="inline-block px-2.5 py-0.5 rounded-md bg-[#E8C547] text-[#4A1513] text-xs font-mono font-bold">
               XUẤT DỮ LIỆU MỞ
             </span>
-            <h2 className="font-serif font-bold text-xl text-white">
+            <h2 id="export-modal-title" className="font-serif font-bold text-xl text-white">
               Xuất Tệp Hồ Sơ Số Dân Ca Quan Họ
             </h2>
-            <p className="text-xs text-[#FDEBD0]/80">
-              Cung cấp dữ liệu mở cho cộng đồng, nghệ nhân và các nhà nghiên cứu văn hóa dân gian sử dụng lại
+            <p className="text-base text-[#FDEBD0]/90">
+              Cung cấp dữ liệu cho cộng đồng, nghệ nhân và nhà nghiên cứu sử dụng phi thương mại
             </p>
           </div>
 
           <button
+            type="button"
             onClick={onClose}
-            className="p-2 rounded-lg hover:bg-white/15 text-white/80 hover:text-white transition-colors"
-            aria-label="Đóng"
+            className="min-h-[44px] min-w-[44px] p-2 rounded-lg hover:bg-white/15 text-white/90 hover:text-white transition-colors flex items-center justify-center shrink-0"
+            aria-label="Đóng cửa sổ xuất tệp"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Content */}
-        <div className="p-6 space-y-5 text-[#2C2420]">
+        <div className="p-4 sm:p-6 space-y-5 text-[#2C2420] overflow-y-auto">
           {/* Format Selection */}
-          <div className="space-y-2">
-            <label className="text-xs font-bold text-[#5B1A18] block uppercase tracking-wider">
+          <div className="space-y-2.5">
+            <span className="text-sm font-bold text-[#5B1A18] block uppercase tracking-wider">
               Chọn định dạng tệp cần xuất:
-            </label>
+            </span>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               {[
                 {
                   id: 'json',
                   label: 'Định dạng JSON',
-                  desc: 'Phục vụ lập trình, API và lưu trữ số hóa',
+                  desc: 'Phục vụ lưu trữ số hóa',
                   icon: <FileJson className="w-5 h-5 text-amber-700" />,
                 },
                 {
                   id: 'csv',
                   label: 'Bảng tính CSV',
-                  desc: 'Mở bằng Excel hoặc Google Sheets chuẩn tiếng Việt',
+                  desc: 'Mở bằng Excel tiếng Việt',
                   icon: <FileSpreadsheet className="w-5 h-5 text-emerald-700" />,
                 },
                 {
                   id: 'md',
                   label: 'Báo cáo Markdown',
-                  desc: 'Văn bản báo cáo điền dã hoàn chỉnh',
+                  desc: 'Văn bản báo cáo hoàn chỉnh',
                   icon: <FileText className="w-5 h-5 text-purple-700" />,
                 },
               ].map((fmt) => (
                 <button
+                  type="button"
                   key={fmt.id}
-                  onClick={() => setSelectedFormat(fmt.id as any)}
-                  className={`p-3.5 rounded-xl text-left transition-all border ${
+                  onClick={() => setSelectedFormat(fmt.id as 'json' | 'csv' | 'md')}
+                  className={`min-h-[72px] p-3.5 rounded-xl text-left transition-all border ${
                     selectedFormat === fmt.id
                       ? 'bg-[#5B1A18] text-[#FDEBD0] border-[#5B1A18] shadow-xs'
                       : 'bg-white text-[#3A2D26] border-[#E3D9C9] hover:bg-[#FAF4EA]'
                   }`}
                 >
-                  <div className="mb-2">{fmt.icon}</div>
-                  <strong className="text-xs font-serif block">{fmt.label}</strong>
-                  <p className={`text-[11px] leading-snug mt-1 ${
-                    selectedFormat === fmt.id ? 'text-[#E8C547]' : 'text-[#7A6458]'
+                  <div className="mb-1.5">{fmt.icon}</div>
+                  <strong className="text-base font-serif block">{fmt.label}</strong>
+                  <span className={`text-sm leading-snug mt-0.5 block ${
+                    selectedFormat === fmt.id ? 'text-[#E8C547]' : 'text-[#6A574C]'
                   }`}>
                     {fmt.desc}
-                  </p>
+                  </span>
                 </button>
               ))}
             </div>
@@ -162,44 +168,49 @@ export const ExportModal: React.FC<ExportModalProps> = ({ isOpen, onClose, recor
 
           {/* Preview Box */}
           <div className="space-y-2">
-            <div className="flex items-center justify-between text-xs">
-              <span className="font-bold text-[#7A6458]">Xem trước dữ liệu ({records.length} bản ghi):</span>
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="text-sm font-bold text-[#7A6458]">Xem trước dữ liệu ({records.length} bản ghi):</span>
               <button
+                type="button"
                 onClick={handleCopy}
-                className="text-xs text-[#5B1A18] hover:text-[#742321] font-semibold flex items-center gap-1"
+                className="min-h-[44px] px-3 py-2 rounded-lg border border-[#D8CCBA] bg-white text-sm text-[#5B1A18] hover:bg-[#FAF4EA] font-semibold flex items-center gap-1.5"
               >
-                {hasCopied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                {hasCopied ? <Check className="w-4 h-4 text-emerald-600 shrink-0" /> : <Copy className="w-4 h-4 shrink-0" />}
                 <span>{hasCopied ? 'Đã sao chép!' : 'Sao chép nội dung'}</span>
               </button>
             </div>
-            <pre className="p-3.5 bg-white rounded-xl border border-[#D8CCBA] text-xs font-mono text-[#382D27] h-44 overflow-y-auto overflow-x-auto whitespace-pre">
-              {getExportContent().slice(0, 1500)}...
-            </pre>
+            <div className="w-full overflow-x-auto rounded-xl border border-[#D8CCBA] bg-white">
+              <pre className="p-3.5 text-sm font-mono text-[#382D27] h-44 overflow-y-auto whitespace-pre">
+                {getExportContent().slice(0, 1500)}...
+              </pre>
+            </div>
           </div>
 
           {/* Community Notice */}
-          <div className="p-3 bg-[#EAF2EC] rounded-xl border border-[#C5DDD0] text-xs text-[#20452C] flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4 text-emerald-700 shrink-0" />
-            <span>
-              Dữ liệu được cấp phép theo tôn chỉ phi thương mại, phục vụ nghiên cứu, giáo dục và trao truyền cộng đồng.
-            </span>
+          <div className="p-3.5 bg-[#EAF2EC] rounded-xl border border-[#C5DDD0] text-base text-[#20452C] flex items-start gap-2.5">
+            <CheckCircle2 className="w-5 h-5 text-emerald-700 shrink-0 mt-0.5" />
+            <p className="leading-relaxed">
+              Dữ liệu được xuất chỉ gồm phần đã có sự đồng thuận công khai, phục vụ nghiên cứu, giáo dục phi thương mại.
+            </p>
           </div>
         </div>
 
         {/* Footer */}
-        <div className="bg-[#FAF4EA] px-6 py-4 border-t border-[#E3D9C9] flex items-center justify-between">
+        <div className="bg-[#FAF4EA] px-4 sm:px-6 py-4 border-t border-[#E3D9C9] flex flex-wrap items-center justify-between gap-3">
           <button
+            type="button"
             onClick={onClose}
-            className="px-4 py-2 rounded-lg bg-white border border-[#D8CCBA] text-[#5A4A42] text-xs font-semibold hover:bg-[#FAF8F5]"
+            className="min-h-[44px] px-4 py-2 rounded-lg bg-white border border-[#D8CCBA] text-[#5A4A42] text-base font-semibold hover:bg-[#FAF8F5]"
           >
             Đóng
           </button>
 
           <button
+            type="button"
             onClick={handleDownload}
-            className="px-5 py-2 rounded-lg bg-[#5B1A18] text-[#FDEBD0] text-xs font-semibold hover:bg-[#742321] flex items-center gap-2 transition-colors shadow-xs"
+            className="min-h-[44px] px-5 py-2.5 rounded-lg bg-[#5B1A18] text-[#FDEBD0] text-base font-semibold hover:bg-[#742321] flex items-center gap-2 transition-colors shadow-xs"
           >
-            <Download className="w-4 h-4" />
+            <Download className="w-4 h-4 shrink-0" />
             <span>Tải tệp .{selectedFormat} về máy</span>
           </button>
         </div>

@@ -207,9 +207,9 @@ export function exportToCSV(records: HeritageRecord[]): string {
 export function exportToMarkdownReport(records: HeritageRecord[]): string {
   const stats = calculateHeritageStats(records);
   let md = `# BÁO CÁO HỒ SƠ SỐ DÂN CA QUAN HỌ Ở VÙNG VĂN HÓA CHÂU THỔ BẮC BỘ
-**Cộng đồng:** Người dân gốc Bắc Ninh / Bắc Giang di cư ra Hà Nội
-**Địa bàn khảo sát:** Thành phố Hà Nội (Trọng tâm: Phường Dịch Vọng, Phường Kim Liên)
-**Vùng đối chiếu:** 49 Làng Quan họ cổ vùng Kinh Bắc (Bắc Ninh - Bắc Giang)
+**Cộng đồng:** Người dân gốc Bắc Ninh / Bắc Giang cũ (nay thuộc Tỉnh Bắc Ninh) di cư ra Hà Nội
+**Địa bàn khảo sát:** Thành phố Hà Nội (Trọng tâm: Phường Cầu Giấy, Phường Nghĩa Đô, Phường Kim Liên — ghi rõ tên cũ trước 07/2025)
+**Vùng đối chiếu:** 49 Làng Quan họ cổ vùng Kinh Bắc (Tỉnh Bắc Ninh sau sắp xếp năm 2025)
 **Người lập hồ sơ:** Nguyễn Viết Hải (Mã SV: PH63500) - Nhóm: [01]
 **Thời gian điền dã:** 6 ngày khảo sát thực tế
 
@@ -247,3 +247,35 @@ export function exportToMarkdownReport(records: HeritageRecord[]): string {
 
   return md;
 }
+
+/**
+ * Kiểm tra giá trị trường có phải nhãn chờ bổ sung hoặc rỗng hay không
+ */
+export function isPendingValue(value?: string): boolean {
+  if (!value || !value.trim()) return true;
+  return /\[CẦN BỔ SUNG/i.test(value);
+}
+
+/**
+ * Kiểm tra chuỗi có phải đường dẫn HTTP/HTTPS hợp lệ (không phải nhãn chờ bổ sung)
+ */
+export function isValidHttpUrl(value?: string): boolean {
+  if (!value || isPendingValue(value)) return false;
+  return /^https?:\/\//i.test(value.trim());
+}
+
+/**
+ * Làm gọn nhãn trạng thái nguồn, ẩn phần ghi chú thiếu/cần bổ sung trong ngoặc
+ */
+export function formatSourceVerifiedStatus(status: string): string {
+  return status.replace(/\s*\((?:thiếu|cần bổ sung)[^)]*\)/gi, '').trim();
+}
+
+/**
+ * Chỉ hiển thị ghi chú trạng thái media khi không phải thông báo "chưa có / chưa công bố"
+ */
+export function shouldDisplayMediaStatus(mediaStatus?: string): boolean {
+  if (!mediaStatus || !mediaStatus.trim()) return false;
+  return !/chưa có|chưa công bố|không công bố/i.test(mediaStatus);
+}
+

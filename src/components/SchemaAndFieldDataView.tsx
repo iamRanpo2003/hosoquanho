@@ -4,12 +4,9 @@ import {
   Table, 
   CheckCircle2, 
   ExternalLink, 
-  FileSpreadsheet, 
   Layers, 
   ShieldCheck, 
   Eye, 
-  BookOpen, 
-  Tag, 
   MapPin, 
   Camera, 
   FileAudio, 
@@ -18,8 +15,7 @@ import {
   Users,
   Search,
   Filter,
-  Check,
-  AlertCircle
+  Check
 } from 'lucide-react';
 import { HeritageRecord } from '../types/heritage';
 
@@ -36,7 +32,6 @@ export const SchemaAndFieldDataView: React.FC<SchemaAndFieldDataViewProps> = ({
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
 
-  // 15 core schema fields definition for heritage digitization
   const schemaFields = [
     {
       code: 'id',
@@ -53,7 +48,7 @@ export const SchemaAndFieldDataView: React.FC<SchemaAndFieldDataViewProps> = ({
       type: 'String',
       requirement: 'Bắt buộc',
       description: 'Tên gọi khoa học, chuẩn mực của thực hành, làn điệu, hiện vật hoặc nghi thức',
-      rule: 'Viết rõ ràng, phản ánh chính xác nội dung di sản, không dùng từ ngữ cảm tính',
+      rule: 'Viết rõ ràng, phản ánh chính xác nội dung di sản',
       example: 'Nghi thức têm trầu cánh phượng mở đầu canh hát giao duyên'
     },
     {
@@ -62,17 +57,8 @@ export const SchemaAndFieldDataView: React.FC<SchemaAndFieldDataViewProps> = ({
       type: 'Enum (6 nhóm)',
       requirement: 'Bắt buộc',
       description: 'Hình thức thể hiện của tư liệu thu thập thực tế',
-      rule: 'Một trong 6 loại: Ảnh thực địa, Âm thanh mộc, Video trích đoạn, Phỏng vấn sâu, Ký âm lời cổ, Hiện vật đạo cụ',
-      example: 'Ảnh chụp thực địa / Âm thanh mộc'
-    },
-    {
-      code: 'categoryScope',
-      name: 'Phân loại theo đề bài',
-      type: 'Category Tag',
-      requirement: 'Bắt buộc',
-      description: 'Phân nhóm tư liệu thực tế phục vụ khảo sát di sản',
-      rule: 'Thuộc 1 trong 5 nhóm: Hình ảnh, Bài viết, Thông tin di sản, Hoạt động văn hóa, Địa điểm sinh hoạt',
-      example: 'Hoạt động văn hóa / Địa điểm sinh hoạt cộng đồng'
+      rule: 'Tư liệu thực địa, Âm thanh mộc, Diễn xướng, Phỏng vấn sâu, Ký âm lời cổ, Hiện vật đạo cụ',
+      example: 'Tư liệu thực địa / Ký âm lời cổ'
     },
     {
       code: 'culturalZone',
@@ -80,7 +66,7 @@ export const SchemaAndFieldDataView: React.FC<SchemaAndFieldDataViewProps> = ({
       type: 'String',
       requirement: 'Bắt buộc',
       description: 'Vùng văn hóa lịch sử bao trùm di sản',
-      rule: 'Chuẩn hóa danh mục: Vùng văn hóa châu thổ Bắc Bộ',
+      rule: 'Chuẩn hóa danh mục: Châu thổ Bắc Bộ',
       example: 'Châu thổ Bắc Bộ'
     },
     {
@@ -89,44 +75,53 @@ export const SchemaAndFieldDataView: React.FC<SchemaAndFieldDataViewProps> = ({
       type: 'String',
       requirement: 'Bắt buộc',
       description: 'Cộng đồng di cư đang thực hành và trao truyền di sản',
-      rule: 'Người dân gốc Bắc Ninh/Bắc Giang di cư sinh hoạt tại CLB Quan họ Cầu Giấy hoặc Đống Đa (Hà Nội)',
-      example: 'Người dân gốc Bắc Ninh/Bắc Giang di cư tại Hà Nội'
+      rule: 'Người dân gốc Kinh Bắc di cư sinh hoạt tại CLB Quan họ Cầu Giấy hoặc Đống Đa (Hà Nội)',
+      example: 'Người dân gốc Bắc Ninh di cư tại Hà Nội'
     },
     {
       code: 'currentAdminPlace',
-      name: 'Địa danh hiện nay',
+      name: 'Địa danh hiện nay (sau 07/2025)',
       type: 'String',
-      requirement: 'Bắt buộc (Quy chuẩn nghiêm ngặt)',
-      description: 'Địa bàn hành chính hiện nay nơi diễn ra khảo sát thực địa',
-      rule: 'QUY TẮC BẮT BUỘC: Ghi theo tên xã hoặc phường, rồi đến tên tỉnh hoặc thành phố. TUYỆT ĐỐI KHÔNG GHI CẤP HUYỆN/QUẬN.',
-      example: 'Phường Dịch Vọng, Thành phố Hà Nội (hoặc Phường Kim Liên, Thành phố Hà Nội)'
+      requirement: 'Bắt buộc (Chuẩn 2025)',
+      description: 'Địa bàn hành chính sau sắp xếp năm 2025 nơi diễn ra khảo sát thực địa',
+      rule: 'Ghi theo đơn vị hành chính cấp xã/phường mới, rồi đến tỉnh/thành phố. Không ghi cấp huyện.',
+      example: 'Phường Cầu Giấy, Thành phố Hà Nội (hoặc Phường Kim Liên, Thành phố Hà Nội)'
     },
     {
       code: 'originalAdminPlace',
-      name: 'Địa danh cũ / Nguồn cội',
+      name: 'Tên cũ & Địa danh gốc',
       type: 'String',
       requirement: 'Bắt buộc',
-      description: 'Địa danh gốc lịch sử tại thời điểm hình thành tư liệu hoặc quê hương gốc của nghệ nhân',
-      rule: 'Giữ nguyên tên gốc làng cổ, tổng, phủ, huyện xưa để phục vụ đối chiếu lịch sử văn hóa',
-      example: 'Làng Diềm (xã Viêm Xá, tổng Phi Mô, phủ Từ Sơn xưa - nay là Phường Hòa Long, Thành phố Bắc Ninh)'
+      description: 'Tên cũ trước sắp xếp năm 2025 và địa danh gốc lịch sử của làng cổ',
+      rule: 'Ghi rõ cả tên cũ (ví dụ: Phường Dịch Vọng, Phường Hòa Long) để phục vụ tra cứu đối chiếu',
+      example: 'Trước 07/2025 là Phường Dịch Vọng, quận Cầu Giấy cũ'
     },
     {
       code: 'kinhBacReferenceVillage',
       name: 'Làng cổ Kinh Bắc đối chiếu',
       type: 'String',
       requirement: 'Bắt buộc',
-      description: 'Điểm quy chiếu trong 49 làng Quan họ cổ vùng Kinh Bắc (Bắc Ninh - Bắc Giang)',
-      rule: 'Thuộc danh mục 49 làng Quan họ cổ được UNESCO và Bộ VHTTDL công nhận',
+      description: 'Điểm quy chiếu trong 49 làng Quan họ cổ vùng Kinh Bắc',
+      rule: 'Thuộc danh mục 49 làng Quan họ cổ được UNESCO ghi danh',
       example: 'Làng Diềm (Viêm Xá), Làng Bồ Sơn, Làng Khả Lễ...'
     },
     {
       code: 'consentStatement',
       name: 'Lời đồng thuận đạo đức',
       type: 'String',
-      requirement: 'Bắt buộc (Đặt ở đầu bản ghi)',
-      description: 'Cam kết bằng lời nói của nghệ nhân/người dân đồng ý cho ghi chép và số hóa',
-      rule: 'Phải ghi câu đồng ý vào đầu bản ghi. Nếu cộng đồng đổi ý thì phải gỡ ngay.',
-      example: 'Nghệ nhân Nguyễn Thị Được đã đồng thuận cho chụp ảnh và số hóa thao tác têm trầu...'
+      requirement: 'Bắt buộc (Đầu bản ghi)',
+      description: 'Cam kết đồng ý của nghệ nhân/người dân trước khi ghi chép và số hóa',
+      rule: 'Ghi câu đồng ý ở đầu bản ghi; nếu chủ thể đổi ý thì gỡ ngay.',
+      example: 'Nghệ nhân Nguyễn Thị Được đã đồng thuận cho ghi chép và số hóa...'
+    },
+    {
+      code: 'nonPublicNote',
+      name: 'Phần giữ kín không công bố',
+      type: 'String',
+      requirement: 'Bảo vệ riêng tư',
+      description: 'Ghi rõ những phần riêng tư hoặc nghi lễ kiêng kỵ chủ thể dặn không công bố',
+      rule: 'Tuyệt đối không đăng địa chỉ nhà riêng, bí quyết riêng hoặc nghi lễ nội bộ.',
+      example: 'Địa chỉ nhà riêng và phần nghi lễ nội cung không cho người ngoài xem được giữ kín.'
     },
     {
       code: 'contributor',
@@ -134,26 +129,26 @@ export const SchemaAndFieldDataView: React.FC<SchemaAndFieldDataViewProps> = ({
       type: 'Object {name, role, age, origin}',
       requirement: 'Bắt buộc',
       description: 'Chủ thể di sản trực tiếp truyền dạy và cung cấp tư liệu',
-      rule: 'Ghi rõ danh tính, vai trò trong câu lạc bộ, quê hương gốc Kinh Bắc',
-      example: 'Nguyễn Thị Được (Nghệ nhân truyền dạy, gốc Làng Diềm, 68 tuổi)'
+      rule: 'Ghi rõ danh tính được phép công bố, vai trò và quê hương gốc',
+      example: 'Nguyễn Thị Được (Nghệ nhân truyền dạy, gốc Làng Diềm)'
     },
     {
       code: 'communityQuote',
-      name: 'Tiếng của chính cộng đồng',
-      type: 'String (Trích dẫn nguyên văn)',
+      name: 'Tiếng nói cộng đồng',
+      type: 'String (Nguyên văn)',
       requirement: 'Bắt buộc',
       description: 'Lời nói nguyên văn của người dân, nghệ nhân chia sẻ về di sản',
-      rule: 'Trích nguyên văn trong ngoặc kép. Không diễn giải lại, không đánh giá đúng sai, giữ giọng người học hỏi.',
-      example: '"Miếng trầu là đầu câu chuyện. Têm cánh phượng phải khéo tay, cau bổ ba múi đều đặn..."'
+      rule: 'Trích nguyên văn, giữ giọng người học hỏi, không phán xét đúng sai.',
+      example: '"Miếng trầu là đầu câu chuyện..."'
     },
     {
       code: 'dialectGlossary',
-      name: 'Từ ngữ phương ngữ & giải nghĩa',
+      name: 'Từ ngữ bản địa & giải nghĩa',
       type: 'Array<{term, meaning}>',
       requirement: 'Bắt buộc khi có từ cổ',
       description: 'Hệ thống thuật ngữ lề lối cổ truyền và tiếng địa phương Kinh Bắc',
-      rule: 'Kèm theo giải nghĩa chuẩn xác từ nghệ nhân và viện nghiên cứu',
-      example: 'Têm trầu cánh phượng, Hát mộc, Giọng lề lối, Nảy hạt, Rền...'
+      rule: 'Giữ nguyên tên gọi bản địa kèm giải nghĩa dễ hiểu',
+      example: 'Têm trầu cánh phượng, Hát mộc, Giọng lề lối, Nảy hạt...'
     },
     {
       code: 'content',
@@ -161,8 +156,8 @@ export const SchemaAndFieldDataView: React.FC<SchemaAndFieldDataViewProps> = ({
       type: 'Text (Chi tiết)',
       requirement: 'Bắt buộc',
       description: 'Nội dung chi tiết về kỹ thuật, nghi lễ, bài bản hoặc không gian di sản',
-      rule: 'Mô tả trung thực, khoa học quá trình thực hành, kỹ thuật hát "Vang - Rền - Nền - Nảy", nghi thức canh hát',
-      example: 'Bản thu âm điền dã làn điệu La rằng... thể hiện trọn vẹn đặc trưng Vang, Rền, Nền, Nảy...'
+      rule: 'Mô tả trung thực quy trình thực hành và kỹ thuật hát Vang - Rền - Nền - Nảy',
+      example: 'Tư liệu điền dã làn điệu La rằng...'
     },
     {
       code: 'sourceCitation & sourceUrl',
@@ -170,38 +165,36 @@ export const SchemaAndFieldDataView: React.FC<SchemaAndFieldDataViewProps> = ({
       type: 'String & URL',
       requirement: 'Bắt buộc (100% có nguồn)',
       description: 'Căn cứ khoa học và xuất xứ kiểm chứng của tư liệu',
-      rule: 'Mỗi thông tin di sản phải dẫn được nguồn từ 7 nguồn chính thống/báo chí đã quy định. Không có nguồn thì không đưa lên.',
-      example: 'Khảo sát điền dã thực tế; đối chiếu Cục Di sản văn hóa (dsvh.gov.vn)'
+      rule: 'Mỗi thông tin phải dẫn được nguồn chính thống hoặc tư liệu điền dã xác thực.',
+      example: 'Khảo sát điền dã; đối chiếu Cục Di sản văn hóa (dsvh.gov.vn)'
     },
     {
-      code: 'imageUrl & imageCaption',
-      name: 'Hình ảnh thực địa & Chú thích',
-      type: 'Image Path & Caption',
-      requirement: 'Khuyến nghị / Minh chứng',
-      description: 'Ảnh chụp chân thực trong đợt khảo sát điền dã 6 ngày tại Hà Nội',
-      rule: 'Ghi rõ chú thích hoạt động, nghệ nhân và bối cảnh ghi hình',
-      example: 'Cơi trầu têm cánh phượng và cau tươi quệt vôi hồng chuẩn mực của liền chị CLB Quan họ Cầu Giấy'
+      code: 'mediaStatus',
+      name: 'Trạng thái ảnh / âm thanh gốc',
+      type: 'String',
+      requirement: 'Trung thực nguồn media',
+      description: 'Xác nhận có tệp ảnh/audio gốc được phép hay chưa',
+      rule: 'Không dùng ảnh do máy sinh thay cho hiện vật, di tích, nghệ nhân có thật.',
+      example: 'Chưa có tệp ảnh gốc được cấp phép công bố.'
     }
   ];
 
-  // Map each record to one of the 5 requested example categories
-  const getRecordCategory = (record: HeritageRecord): { label: string; color: string; icon: any } => {
-    if (record.id === 'QH-HN-005' || record.id === 'QH-HN-010') {
-      return { label: 'Hình ảnh & Hiện vật', color: 'bg-amber-100 text-amber-900 border-amber-300', icon: Camera };
+  const getRecordCategory = (record: HeritageRecord): { label: string; color: string; icon: React.ComponentType<{ className?: string }> } => {
+    if (record.id === 'QH-HN-005' || record.id === 'QH-HN-006') {
+      return { label: 'Hiện vật & Trang phục', color: 'bg-amber-100 text-amber-900 border-amber-300', icon: Camera };
     }
-    if (record.id === 'QH-HN-003' || record.id === 'QH-HN-011') {
-      return { label: 'Bài viết & Tri thức di sản', color: 'bg-blue-100 text-blue-900 border-blue-300', icon: FileText };
+    if (record.id === 'QH-HN-003' || record.id === 'QH-HN-009' || record.id === 'QH-HN-013') {
+      return { label: 'Phỏng vấn & Tri thức', color: 'bg-blue-100 text-blue-900 border-blue-300', icon: FileText };
     }
-    if (record.id === 'QH-HN-002' || record.id === 'QH-HN-004' || record.id === 'QH-HN-008' || record.id === 'QH-HN-009' || record.id === 'QH-HN-014' || record.id === 'QH-HN-015') {
-      return { label: 'Thông tin di sản & Bài bản cổ', color: 'bg-emerald-100 text-emerald-900 border-emerald-300', icon: FileAudio };
+    if (record.id === 'QH-HN-002' || record.id === 'QH-HN-004' || record.id === 'QH-HN-008' || record.id === 'QH-HN-011' || record.id === 'QH-HN-012' || record.id === 'QH-HN-016') {
+      return { label: 'Bài bản cổ & Ký âm', color: 'bg-emerald-100 text-emerald-900 border-emerald-300', icon: FileAudio };
     }
-    if (record.id === 'QH-HN-001' || record.id === 'QH-HN-006' || record.id === 'QH-HN-012' || record.id === 'QH-HN-013') {
-      return { label: 'Hoạt động văn hóa & Nghi lễ', color: 'bg-rose-100 text-rose-900 border-rose-300', icon: Users };
+    if (record.id === 'QH-HN-001' || record.id === 'QH-HN-007' || record.id === 'QH-HN-015') {
+      return { label: 'Hoạt động & Nghi lễ', color: 'bg-rose-100 text-rose-900 border-rose-300', icon: Users };
     }
-    return { label: 'Địa điểm sinh hoạt cộng đồng', color: 'bg-purple-100 text-purple-900 border-purple-300', icon: Building };
+    return { label: 'Địa điểm & Di tích', color: 'bg-purple-100 text-purple-900 border-purple-300', icon: Building };
   };
 
-  // Filter records
   const filteredRecords = records.filter(record => {
     const cat = getRecordCategory(record).label;
     const matchesCategory = categoryFilter === 'all' || cat.includes(categoryFilter);
@@ -209,6 +202,7 @@ export const SchemaAndFieldDataView: React.FC<SchemaAndFieldDataViewProps> = ({
       record.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
       record.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       record.currentAdminPlace.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      record.originalAdminPlace.toLowerCase().includes(searchQuery.toLowerCase()) ||
       record.sourceCitation.toLowerCase().includes(searchQuery.toLowerCase()) ||
       record.content.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
@@ -217,59 +211,59 @@ export const SchemaAndFieldDataView: React.FC<SchemaAndFieldDataViewProps> = ({
   return (
     <div className="space-y-8">
       {/* Header Banner */}
-      <div className="bg-[#5B1A18] text-[#FDEBD0] rounded-2xl p-6 sm:p-8 border border-[#E8C547]/30 shadow-md relative overflow-hidden">
-        <div className="relative z-10 max-w-4xl space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E8C547]/20 text-[#E8C547] text-xs font-semibold border border-[#E8C547]/30">
-            <Database className="w-3.5 h-3.5" />
-            <span>Đặc tả Dữ liệu Khoa học • Chuẩn hóa Di sản Phi vật thể</span>
+      <section className="bg-[#5B1A18] text-[#FDEBD0] rounded-2xl p-5 sm:p-8 border border-[#E8C547]/30 shadow-md">
+        <div className="max-w-4xl space-y-3">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E8C547]/20 text-[#E8C547] text-sm font-semibold border border-[#E8C547]/30">
+            <Database className="w-4 h-4 shrink-0" />
+            <span>Đặc tả Dữ liệu Khoa học • Địa danh Sau Sắp Xếp 2025</span>
           </div>
           <h2 className="font-serif text-2xl sm:text-3xl font-bold text-white tracking-tight">
-            Thiết kế Bộ Trường Dữ Liệu & Danh Mục 16 Hồ Sơ Thực Tế
+            Thiết Kế Bộ Trường Dữ Liệu & Danh Mục {records.length} Hồ Sơ Thực Tế
           </h2>
-          <p className="text-sm text-[#FDEBD0]/85 leading-relaxed">
-            Đáp ứng đầy đủ 2 yêu cầu trọng tâm của đề án: <strong>Thu thập tối thiểu 15 bản ghi tư liệu thực tế</strong> 
-            (đã hoàn thành 16 bản ghi, 100% có nguồn kiểm chứng chính thống và hình ảnh thực địa) và 
-            <strong> Thiết kế bộ trường dữ liệu chuẩn hóa</strong> với quy chuẩn địa danh 2 cấp không ghi cấp huyện.
+          <p className="text-base text-[#FDEBD0]/90 leading-relaxed">
+            Quy chuẩn cấu trúc <strong>{schemaFields.length} trường dữ liệu</strong> cho mỗi hồ sơ số di sản Quan họ, bảo đảm địa danh 2 cấp sau sắp xếp năm 2025 (kèm tên cũ), đồng thuận cộng đồng và nguồn kiểm chứng rõ ràng.
           </p>
         </div>
-      </div>
+      </section>
 
       {/* Sub Tab Navigation */}
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#E3D9C9] pb-4">
-        <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#E3D9C9] pb-4">
+        <div className="flex flex-wrap items-center gap-2">
           <button
+            type="button"
             onClick={() => setActiveSubTab('schema')}
-            className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all flex items-center gap-2 ${
+            className={`min-h-[44px] px-4 py-2 rounded-lg text-sm sm:text-base font-semibold transition-all flex items-center gap-2 ${
               activeSubTab === 'schema'
                 ? 'bg-[#5B1A18] text-white shadow-sm'
                 : 'bg-white text-[#5A4A42] hover:bg-[#EFE8DC] border border-[#E3D9C9]'
             }`}
           >
-            <Layers className="w-4 h-4 text-[#E8C547]" />
-            <span>1. Thiết kế Bộ trường dữ liệu ({schemaFields.length} trường)</span>
+            <Layers className="w-4 h-4 text-[#E8C547] shrink-0" />
+            <span>1. Bộ trường dữ liệu ({schemaFields.length} trường)</span>
           </button>
 
           <button
+            type="button"
             onClick={() => setActiveSubTab('records-table')}
-            className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all flex items-center gap-2 ${
+            className={`min-h-[44px] px-4 py-2 rounded-lg text-sm sm:text-base font-semibold transition-all flex items-center gap-2 ${
               activeSubTab === 'records-table'
                 ? 'bg-[#5B1A18] text-white shadow-sm'
                 : 'bg-white text-[#5A4A42] hover:bg-[#EFE8DC] border border-[#E3D9C9]'
             }`}
           >
-            <Table className="w-4 h-4 text-[#E8C547]" />
-            <span>2. Bảng tổng hợp 16 bản ghi thực tế ({records.length} hồ sơ)</span>
+            <Table className="w-4 h-4 text-[#E8C547] shrink-0" />
+            <span>2. Bảng 16 bản ghi thực tế</span>
           </button>
         </div>
 
-        <div className="flex items-center gap-2 text-xs text-[#7A6458]">
-          <span className="inline-flex items-center gap-1 font-semibold text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
-            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-            16/15 bản ghi (Vượt chỉ tiêu)
+        <div className="flex flex-wrap items-center gap-2 text-sm">
+          <span className="inline-flex items-center gap-1.5 font-semibold text-emerald-900 bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-200">
+            <CheckCircle2 className="w-4 h-4 text-emerald-700 shrink-0" />
+            <span>{records.length}/15 bản ghi</span>
           </span>
-          <span className="inline-flex items-center gap-1 font-semibold text-blue-800 bg-blue-50 px-2.5 py-1 rounded-full border border-blue-200">
-            <ShieldCheck className="w-3.5 h-3.5 text-blue-600" />
-            100% Có nguồn kiểm chứng
+          <span className="inline-flex items-center gap-1.5 font-semibold text-blue-900 bg-blue-50 px-3 py-1.5 rounded-full border border-blue-200">
+            <ShieldCheck className="w-4 h-4 text-blue-700 shrink-0" />
+            <span>100% Có nguồn</span>
           </span>
         </div>
       </div>
@@ -280,100 +274,87 @@ export const SchemaAndFieldDataView: React.FC<SchemaAndFieldDataViewProps> = ({
           {/* Key Principles Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="bg-white p-5 rounded-xl border border-[#E3D9C9] shadow-2xs space-y-2">
-              <div className="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center">
+              <div className="w-9 h-9 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center">
                 <ShieldCheck className="w-5 h-5" />
               </div>
-              <h3 className="font-serif font-bold text-base text-[#5B1A18]">Nguyên tắc Kiểm chứng (Verifiable)</h3>
-              <p className="text-xs text-[#5A4A42] leading-relaxed">
-                Mỗi thông tin về di sản phải dẫn được nguồn từ 7 nguồn chính thống hoặc báo chí nghiên cứu đã công bố. 
-                <strong> Không có nguồn thì tuyệt đối không đưa lên</strong>. Không bịa đặt kể cả khi thiếu tư liệu.
+              <h3 className="font-serif font-bold text-lg text-[#5B1A18]">Nguyên tắc Kiểm chứng</h3>
+              <p className="text-base text-[#4A3B32] leading-relaxed">
+                Mỗi thông tin đều dẫn nguồn chính thống hoặc tư liệu điền dã đã xác minh, tuyệt đối không tự bịa.
               </p>
             </div>
 
             <div className="bg-white p-5 rounded-xl border border-[#E3D9C9] shadow-2xs space-y-2">
-              <div className="w-8 h-8 rounded-lg bg-amber-100 text-amber-800 flex items-center justify-center">
+              <div className="w-9 h-9 rounded-lg bg-amber-100 text-amber-800 flex items-center justify-center">
                 <MapPin className="w-5 h-5" />
               </div>
-              <h3 className="font-serif font-bold text-base text-[#5B1A18]">Quy chuẩn Địa danh 2 Cấp</h3>
-              <p className="text-xs text-[#5A4A42] leading-relaxed">
-                Địa danh hiện nay ghi chuẩn theo danh mục hành chính: <strong>Tên Xã/Phường, rồi đến Tên Tỉnh/Thành phố</strong>. 
-                <strong> Tuyệt đối không ghi cấp huyện/quận</strong> theo đúng chỉ đạo khoa học.
+              <h3 className="font-serif font-bold text-lg text-[#5B1A18]">Địa danh Sau Sắp Xếp 2025</h3>
+              <p className="text-base text-[#4A3B32] leading-relaxed">
+                Ghi theo đơn vị hành chính cấp xã/phường mới + tỉnh/thành phố (không ghi cấp huyện), đồng thời lưu rõ tên cũ.
               </p>
             </div>
 
             <div className="bg-white p-5 rounded-xl border border-[#E3D9C9] shadow-2xs space-y-2">
-              <div className="w-8 h-8 rounded-lg bg-rose-100 text-rose-800 flex items-center justify-center">
+              <div className="w-9 h-9 rounded-lg bg-rose-100 text-rose-800 flex items-center justify-center">
                 <Users className="w-5 h-5" />
               </div>
-              <h3 className="font-serif font-bold text-base text-[#5B1A18]">Tôn trọng Chủ thể Cộng đồng</h3>
-              <p className="text-xs text-[#5A4A42] leading-relaxed">
-                Lời đồng thuận đặt ở dòng đầu tiên. Người quyết định là cộng đồng. Giữ giọng người học hỏi, 
-                không phán xét đúng sai và trích nguyên văn lời chia sẻ của người Kinh Bắc di cư.
+              <h3 className="font-serif font-bold text-lg text-[#5B1A18]">Bảo Vệ Quyền Riêng Tư</h3>
+              <p className="text-base text-[#4A3B32] leading-relaxed">
+                Ghi đồng thuận ở đầu bản ghi, ẩn giữ kín các phần chủ thể dặn không công bố và không dùng ảnh máy sinh thay cho người thật.
               </p>
             </div>
           </div>
 
-          {/* Detailed Schema Table */}
+          {/* Detailed Schema Table inside dedicated horizontal scroll container */}
           <div className="bg-white rounded-xl border border-[#E3D9C9] shadow-sm overflow-hidden">
             <div className="p-4 sm:p-5 bg-[#FAF7F2] border-b border-[#E3D9C9] flex flex-wrap items-center justify-between gap-3">
               <div>
                 <h3 className="font-serif font-bold text-lg text-[#5B1A18] flex items-center gap-2">
-                  <Database className="w-5 h-5 text-[#E8C547]" />
-                  Đặc tả chi tiết {schemaFields.length} trường thông tin lưu trữ trong mỗi bản ghi
+                  <Database className="w-5 h-5 text-[#E8C547] shrink-0" />
+                  <span>Đặc tả {schemaFields.length} trường thông tin lưu trữ trong mỗi bản ghi</span>
                 </h3>
-                <p className="text-xs text-[#7A6458]">
-                  Cấu trúc dữ liệu đã được triển khai đầy đủ trên TypeScript Interface (HeritageRecord)
+                <p className="text-base text-[#7A6458] mt-1 sm:hidden">
+                  ← Vuốt ngang trong bảng để xem đầy đủ các cột →
                 </p>
               </div>
-              <span className="text-xs font-mono bg-[#5B1A18] text-[#FDEBD0] px-3 py-1 rounded-md font-semibold">
-                Schema: v2.0 (Strict No-District Rule)
+              <span className="text-sm font-mono bg-[#5B1A18] text-[#FDEBD0] px-3 py-1 rounded-md font-semibold">
+                Schema v2.1 (2025)
               </span>
             </div>
 
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse text-xs">
+            <div className="w-full overflow-x-auto">
+              <table className="w-full text-left border-collapse text-base min-w-[820px]">
                 <thead>
-                  <tr className="bg-[#F3EDE2] text-[#4A1513] font-semibold border-b border-[#E3D9C9]">
+                  <tr className="bg-[#F3EDE2] text-[#4A1513] font-semibold text-sm border-b border-[#E3D9C9]">
                     <th className="py-3 px-4 w-12 text-center">STT</th>
-                    <th className="py-3 px-4 w-36">Tên trường (Field)</th>
-                    <th className="py-3 px-4 w-32">Mã trường (Key)</th>
-                    <th className="py-3 px-4 w-28">Kiểu dữ liệu</th>
-                    <th className="py-3 px-4 w-36">Yêu cầu kiểm chuẩn</th>
-                    <th className="py-3 px-4 min-w-[240px]">Ý nghĩa & Quy tắc lưu trữ</th>
-                    <th className="py-3 px-4 min-w-[180px]">Dữ liệu mẫu</th>
+                    <th className="py-3 px-4 w-44">Tên trường</th>
+                    <th className="py-3 px-4 w-36">Mã trường</th>
+                    <th className="py-3 px-4 w-36">Yêu cầu</th>
+                    <th className="py-3 px-4 min-w-[260px]">Ý nghĩa & Quy chuẩn</th>
+                    <th className="py-3 px-4 min-w-[200px]">Ví dụ</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#EFE8DC]">
                   {schemaFields.map((field, idx) => (
                     <tr key={field.code} className="hover:bg-[#FAF7F2]/60 transition-colors">
-                      <td className="py-3 px-4 text-center font-mono text-[#8C7A70]">{idx + 1}</td>
-                      <td className="py-3 px-4 font-semibold text-[#2C2420]">
+                      <td className="py-3.5 px-4 text-center font-mono text-sm text-[#7A6458]">{idx + 1}</td>
+                      <td className="py-3.5 px-4 font-semibold text-[#2C2420]">
                         {field.name}
                       </td>
-                      <td className="py-3 px-4 font-mono text-emerald-800 bg-emerald-50/50 rounded-sm">
+                      <td className="py-3.5 px-4 font-mono text-sm text-emerald-800 bg-emerald-50/50">
                         {field.code}
                       </td>
-                      <td className="py-3 px-4 text-[#5A4A42]">
-                        <span className="px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 font-mono text-[11px]">
-                          {field.type}
-                        </span>
-                      </td>
-                      <td className="py-3 px-4">
-                        <span className={`px-2 py-0.5 rounded-md text-[11px] font-medium ${
-                          field.requirement.includes('nghiêm ngặt') || field.requirement.includes('Bắt buộc')
-                            ? 'bg-red-50 text-red-700 border border-red-200'
-                            : 'bg-amber-50 text-amber-700 border border-amber-200'
-                        }`}>
+                      <td className="py-3.5 px-4">
+                        <span className="inline-block px-2.5 py-1 rounded-md text-xs font-semibold bg-red-50 text-red-800 border border-red-200">
                           {field.requirement}
                         </span>
                       </td>
-                      <td className="py-3 px-4 text-[#4A3F35] leading-relaxed">
+                      <td className="py-3.5 px-4 text-[#3A2D26] leading-relaxed">
                         <p>{field.description}</p>
-                        <p className="text-[11px] text-[#7A6458] mt-0.5 italic">
-                          <strong className="text-[#5B1A18]">Quy chuẩn:</strong> {field.rule}
+                        <p className="text-base text-[#6A574C] mt-1 italic">
+                          <strong>Quy chuẩn:</strong> {field.rule}
                         </p>
                       </td>
-                      <td className="py-3 px-4 text-[#5B1A18] font-medium italic bg-[#FAF7F2]/40">
+                      <td className="py-3.5 px-4 text-sm text-[#5B1A18] font-medium italic bg-[#FAF7F2]/40">
                         {field.example}
                       </td>
                     </tr>
@@ -389,24 +370,25 @@ export const SchemaAndFieldDataView: React.FC<SchemaAndFieldDataViewProps> = ({
       {activeSubTab === 'records-table' && (
         <div className="space-y-4">
           {/* Filters & Search */}
-          <div className="bg-white p-4 rounded-xl border border-[#E3D9C9] shadow-2xs flex flex-wrap items-center justify-between gap-3">
+          <div className="bg-white p-4 rounded-xl border border-[#E3D9C9] shadow-2xs flex flex-col lg:flex-row lg:items-center justify-between gap-3">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-xs font-semibold text-[#5A4A42] flex items-center gap-1 mr-1">
-                <Filter className="w-3.5 h-3.5 text-[#5B1A18]" />
-                Phân loại theo ví dụ:
+              <span className="text-sm font-semibold text-[#5A4A42] flex items-center gap-1 mr-1">
+                <Filter className="w-4 h-4 text-[#5B1A18]" />
+                <span>Phân loại:</span>
               </span>
               {[
-                { key: 'all', label: 'Tất cả 16 bản ghi' },
-                { key: 'Hình ảnh', label: 'Hình ảnh & Hiện vật' },
-                { key: 'Bài viết', label: 'Bài viết & Tri thức' },
-                { key: 'Thông tin di sản', label: 'Thông tin & Bài bản cổ' },
-                { key: 'Hoạt động văn hóa', label: 'Hoạt động & Nghi lễ' },
-                { key: 'Địa điểm', label: 'Địa điểm sinh hoạt' },
+                { key: 'all', label: 'Tất cả 16' },
+                { key: 'Hiện vật', label: 'Hiện vật' },
+                { key: 'Phỏng vấn', label: 'Phỏng vấn' },
+                { key: 'Bài bản cổ', label: 'Bài bản cổ' },
+                { key: 'Hoạt động', label: 'Nghi lễ' },
+                { key: 'Địa điểm', label: 'Địa điểm' },
               ].map(cat => (
                 <button
+                  type="button"
                   key={cat.key}
                   onClick={() => setCategoryFilter(cat.key)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                  className={`min-h-[44px] px-3.5 py-2 rounded-lg text-sm font-medium transition-colors ${
                     categoryFilter === cat.key
                       ? 'bg-[#5B1A18] text-white shadow-2xs font-semibold'
                       : 'bg-[#F3EDE2] text-[#5A4A42] hover:bg-[#EAE0D0]'
@@ -417,32 +399,37 @@ export const SchemaAndFieldDataView: React.FC<SchemaAndFieldDataViewProps> = ({
               ))}
             </div>
 
-            <div className="relative w-full sm:w-64">
+            <div className="relative w-full lg:w-72">
               <input
                 type="text"
-                placeholder="Tìm kiếm mã, tên, nguồn..."
+                aria-label="Tìm kiếm trong bảng hồ sơ"
+                placeholder="Tìm mã, tên, địa danh, nguồn..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full text-xs pl-8 pr-3 py-1.5 rounded-lg border border-[#D6C7B2] bg-[#FAF7F2] focus:outline-hidden focus:ring-1 focus:ring-[#5B1A18]"
+                className="w-full min-h-[44px] text-base pl-10 pr-3 py-2 rounded-lg border border-[#D6C7B2] bg-[#FAF7F2] focus:outline-hidden focus:ring-2 focus:ring-[#5B1A18]/40"
               />
-              <Search className="w-3.5 h-3.5 text-[#8C7A70] absolute left-2.5 top-1/2 -translate-y-1/2" />
+              <Search className="w-4 h-4 text-[#8C7A70] absolute left-3 top-1/2 -translate-y-1/2" />
             </div>
           </div>
 
-          {/* Records Table */}
+          <p className="text-base text-[#7A6458] italic sm:hidden">
+            ← Vuốt ngang trong bảng để xem đầy đủ các cột →
+          </p>
+
+          {/* Records Table inside dedicated horizontal scroll wrapper */}
           <div className="bg-white rounded-xl border border-[#E3D9C9] shadow-sm overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse text-xs">
+            <div className="w-full overflow-x-auto">
+              <table className="w-full text-left border-collapse text-base min-w-[920px]">
                 <thead>
-                  <tr className="bg-[#F3EDE2] text-[#4A1513] font-semibold border-b border-[#E3D9C9]">
-                    <th className="py-3 px-3 w-10 text-center">STT</th>
-                    <th className="py-3 px-3 w-28">Mã tư liệu</th>
-                    <th className="py-3 px-3 min-w-[220px]">Tên tư liệu & Hình ảnh</th>
-                    <th className="py-3 px-3 w-40">Phân loại & Loại hình</th>
-                    <th className="py-3 px-3 min-w-[170px]">Địa danh hiện nay (Không ghi huyện)</th>
-                    <th className="py-3 px-3 min-w-[160px]">Địa danh gốc Kinh Bắc</th>
-                    <th className="py-3 px-3 min-w-[240px]">Nguồn kiểm chứng chính thống</th>
-                    <th className="py-3 px-3 w-24 text-center">Hành động</th>
+                  <tr className="bg-[#F3EDE2] text-[#4A1513] font-semibold text-sm border-b border-[#E3D9C9]">
+                    <th className="py-3 px-3 w-12 text-center">STT</th>
+                    <th className="py-3 px-3 w-32">Mã tư liệu</th>
+                    <th className="py-3 px-3 min-w-[240px]">Tên tư liệu</th>
+                    <th className="py-3 px-3 w-44">Phân loại</th>
+                    <th className="py-3 px-3 min-w-[190px]">Địa danh hiện nay (2025)</th>
+                    <th className="py-3 px-3 min-w-[200px]">Tên cũ & Làng đối chiếu</th>
+                    <th className="py-3 px-3 min-w-[230px]">Nguồn kiểm chứng</th>
+                    <th className="py-3 px-3 w-28 text-center">Chi tiết</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#EFE8DC]">
@@ -452,56 +439,41 @@ export const SchemaAndFieldDataView: React.FC<SchemaAndFieldDataViewProps> = ({
 
                     return (
                       <tr key={rec.id} className="hover:bg-[#FAF7F2]/70 transition-colors">
-                        <td className="py-3 px-3 text-center font-mono text-[#8C7A70]">{idx + 1}</td>
-                        <td className="py-3 px-3">
-                          <span className="font-mono font-bold text-[#5B1A18] bg-[#FDEBD0] px-2 py-0.5 rounded-md border border-[#E8C547]/40">
+                        <td className="py-3.5 px-3 text-center font-mono text-sm text-[#7A6458]">{idx + 1}</td>
+                        <td className="py-3.5 px-3">
+                          <span className="font-mono text-sm font-bold text-[#5B1A18] bg-[#FDEBD0] px-2.5 py-1 rounded-md border border-[#E8C547]/40">
                             {rec.id}
                           </span>
                         </td>
-                        <td className="py-3 px-3">
-                          <div className="flex items-center gap-2.5">
-                            {rec.imageUrl ? (
-                              <img
-                                src={rec.imageUrl}
-                                alt={rec.title}
-                                className="w-12 h-10 object-cover rounded-md border border-[#D6C7B2] shrink-0"
-                              />
-                            ) : (
-                              <div className="w-12 h-10 rounded-md bg-[#EFE8DC] flex items-center justify-center shrink-0 text-[#8C7A70]">
-                                <Camera className="w-4 h-4" />
-                              </div>
-                            )}
-                            <div>
-                              <p className="font-semibold text-[#2C2420] line-clamp-1">{rec.title}</p>
-                              <p className="text-[11px] text-[#7A6458] line-clamp-1 mt-0.5">
-                                Khảo sát: {rec.surveyDay} • {rec.contributor.name}
-                              </p>
-                            </div>
-                          </div>
+                        <td className="py-3.5 px-3">
+                          <p className="font-semibold text-[#2C2420] leading-snug">{rec.title}</p>
+                          <p className="text-base text-[#6A574C] mt-0.5">
+                            {rec.surveyDay} • {rec.contributor.name}
+                          </p>
                         </td>
-                        <td className="py-3 px-3 space-y-1">
-                          <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-medium border ${catInfo.color}`}>
-                            <CatIcon className="w-3 h-3" />
-                            {catInfo.label}
+                        <td className="py-3.5 px-3 space-y-1">
+                          <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-medium border ${catInfo.color}`}>
+                            <CatIcon className="w-3.5 h-3.5 shrink-0" />
+                            <span>{catInfo.label}</span>
                           </span>
-                          <span className="block text-[11px] text-[#7A6458]">
+                          <span className="block text-sm text-[#6A574C]">
                             {rec.recordTypeLabel}
                           </span>
                         </td>
-                        <td className="py-3 px-3">
-                          <span className="inline-flex items-center gap-1 font-medium text-emerald-900 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
-                            <MapPin className="w-3 h-3 text-emerald-600 shrink-0" />
-                            {rec.currentAdminPlace}
+                        <td className="py-3.5 px-3">
+                          <span className="inline-flex items-start gap-1 text-sm font-medium text-emerald-900 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200">
+                            <MapPin className="w-4 h-4 text-emerald-700 shrink-0 mt-0.5" />
+                            <span>{rec.currentAdminPlace}</span>
                           </span>
                         </td>
-                        <td className="py-3 px-3 text-[#5A4A42]">
-                          <span className="font-medium text-[#5B1A18] block">{rec.kinhBacReferenceVillage}</span>
-                          <span className="text-[11px] text-[#7A6458] line-clamp-1">{rec.originalAdminPlace}</span>
+                        <td className="py-3.5 px-3 text-sm text-[#5A4A42]">
+                          <span className="font-semibold text-[#5B1A18] block">{rec.kinhBacReferenceVillage}</span>
+                          <span className="text-[#6A574C] block mt-0.5">{rec.originalAdminPlace}</span>
                         </td>
-                        <td className="py-3 px-3">
-                          <div className="space-y-1">
-                            <div className="flex items-center gap-1 text-[11px] text-emerald-700 font-semibold">
-                              <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
+                        <td className="py-3.5 px-3 text-sm">
+                          <div className="space-y-1.5">
+                            <div className="flex items-start gap-1 text-emerald-800 font-semibold">
+                              <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5" />
                               <span>{rec.sourceCitation}</span>
                             </div>
                             {rec.sourceUrl && (
@@ -509,21 +481,22 @@ export const SchemaAndFieldDataView: React.FC<SchemaAndFieldDataViewProps> = ({
                                 href={rec.sourceUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="inline-flex items-center gap-1 text-[11px] text-blue-700 hover:text-blue-900 underline"
+                                className="min-h-[44px] inline-flex items-center gap-1 text-sm text-blue-700 hover:text-blue-900 underline py-2"
                               >
                                 <span>{rec.sourceUrl}</span>
-                                <ExternalLink className="w-2.5 h-2.5" />
+                                <ExternalLink className="w-3.5 h-3.5 shrink-0" />
                               </a>
                             )}
                           </div>
                         </td>
-                        <td className="py-3 px-3 text-center">
+                        <td className="py-3.5 px-3 text-center">
                           <button
+                            type="button"
                             onClick={() => onSelectRecord(rec)}
-                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-[#5B1A18] text-[#FDEBD0] hover:bg-[#80221F] font-medium text-xs shadow-2xs transition-colors"
+                            className="min-h-[44px] min-w-[84px] inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-lg bg-[#5B1A18] text-[#FDEBD0] hover:bg-[#80221F] font-semibold text-sm shadow-2xs transition-colors"
                             title="Xem chi tiết hồ sơ số"
                           >
-                            <Eye className="w-3 h-3" />
+                            <Eye className="w-4 h-4 shrink-0" />
                             <span>Xem</span>
                           </button>
                         </td>
@@ -534,16 +507,12 @@ export const SchemaAndFieldDataView: React.FC<SchemaAndFieldDataViewProps> = ({
               </table>
             </div>
 
-            <div className="p-4 bg-[#FAF7F2] border-t border-[#E3D9C9] flex flex-wrap items-center justify-between gap-3 text-xs text-[#7A6458]">
+            <div className="p-4 bg-[#FAF7F2] border-t border-[#E3D9C9] flex flex-wrap items-center justify-between gap-3 text-sm text-[#6A574C]">
               <span>Hiển thị <strong>{filteredRecords.length} / {records.length}</strong> bản ghi tư liệu thực tế</span>
-              <div className="flex items-center gap-3">
+              <div className="flex flex-wrap items-center gap-3">
                 <span className="flex items-center gap-1 text-emerald-800 font-medium">
-                  <Check className="w-3.5 h-3.5 text-emerald-600" />
-                  Chuẩn hóa địa danh: Xã/Phường + Tỉnh/TP (Không huyện)
-                </span>
-                <span className="flex items-center gap-1 text-blue-800 font-medium">
-                  <Check className="w-3.5 h-3.5 text-blue-600" />
-                  Có đối chiếu 49 làng cổ Kinh Bắc
+                  <Check className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span>Địa danh chuẩn 07/2025 (Xã/Phường + Tỉnh/TP)</span>
                 </span>
               </div>
             </div>
